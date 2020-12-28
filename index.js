@@ -27,7 +27,7 @@ io.on("connection", socket => {
     socket.join(room);
     // server sends a message to all in room except current user that a new user is connected
     socket.to(room).broadcast.emit("user-connected", userId);
-    // tell everyone a user has left
+    // tell everyone a user has left by sending its ID
     socket.on("disconnect", () => {
       socket.to(room).broadcast.emit("user-disconnected", userId);
     });
