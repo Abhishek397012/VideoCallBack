@@ -8,7 +8,6 @@ const io = require("socket.io")(server, {
   },
 });
 
-// different values of room creates different rooms
 const room = "afasds";
 
 app.get("/", (req, res) => {
@@ -19,18 +18,11 @@ app.get("/name", (req, res) => {
   res.send("Abhishek Sharma");
 });
 
-// server
 io.on("connection", socket => {
-  // new socket requests to join room
   socket.on("join-room", userId => {
-    // server joins client to room
+    console.log("userConneted with id: ", userId); // debuging
     socket.join(room);
-    // server sends a message to all in room except current user that a new user is connected
     socket.to(room).broadcast.emit("user-connected", userId);
-    // tell everyone a user has left by sending its ID
-    socket.on("disconnect", () => {
-      socket.to(room).broadcast.emit("user-disconnected", userId);
-    });
   });
 });
 
